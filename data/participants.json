@@ -1,0 +1,52 @@
+{
+    "Role":{
+        "0":"'Good' Peer Reviewer",
+        "1":"'Mean' Peer Reviewer",
+        "2":"Archaeologist",
+        "3":"Developer",
+        "4":"Entrepreneur",
+        "5":"Journalist",
+        "6":"Mediator",
+        "7":null
+    },
+    "Participants":{
+        "0":2.0,
+        "1":1.0,
+        "2":3.0,
+        "3":1.0,
+        "4":1.0,
+        "5":2.0,
+        "6":1.0,
+        "7":null
+    },
+    "email":{
+        "0":null,
+        "1":null,
+        "2":null,
+        "3":null,
+        "4":null,
+        "5":null,
+        "6":null,
+        "7":"l"
+    },
+    "name":{
+        "0":null,
+        "1":null,
+        "2":null,
+        "3":null,
+        "4":null,
+        "5":null,
+        "6":null,
+        "7":"Luis"
+    },
+    "role":{
+        "0":null,
+        "1":null,
+        "2":null,
+        "3":null,
+        "4":null,
+        "5":null,
+        "6":null,
+        "7":"Developer"
+    }
+}

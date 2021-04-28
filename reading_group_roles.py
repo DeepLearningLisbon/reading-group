@@ -8,47 +8,69 @@ To run the app:
 
 
 import os
+import re
+import json
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
+rules_path = "rules.md"
+event_path = "event.json"
+roles_path = "roles.json"
+dataset_path = "data/reading_group_roles.json"
+participants_path = "data/participants.json"
 
 def app_rg():
-    # TODO: Read these values from a file
-    date = "14th April 2021 18:30 GMT+1"
-    paper = "Learning Representations by back-propagating errors"
-    paper_link = "https://www.iro.umontreal.ca/~vincentp/ift3395/lectures/backprop_old.pdf"
-    dataset_path = "data/reading_group_roles.json"
-    participants_path = "data/participants.json"
 
+    # __________Main Body_____________
+    # Make Header with Event Info
+    with open(event_path, "r") as f:
+        event = json.load(f)
+    date = event["date"]
+    paper = event["paper"]
+    paper_link = event["paper_link"]
 
-    st.title("Reading Group by DLSL")
-    st.markdown(f"""🗓 **Date:** {date}""")
-    st.markdown(
-        f"""📝 **Paper:** <a href={paper_link}>{paper}</a>""",
-        unsafe_allow_html=True,
-    )
-
+    st.title("Reading Group by Deep Learning Session Lisbon")
+    st.markdown(f"🗓 **Date:** {date}")
+    st.markdown(f"📝 **Paper:** [{paper}]({paper_link})")
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
-    roles = {
-        "Mediator": {"max_players": 1, "emoji": "⚖️"},
-        "'Good' Peer Reviewer": {"max_players": 4, "emoji": "👼"},
-        "'Bad' Peer Reviewer": {"max_players": 4, "emoji": "👿"},
-        "Archaeologist": {"max_players": 3, "emoji": "🏺"},
-        "Entrepreneur": {"max_players": 3, "emoji": "💼"},
-        "Developer": {"max_players": 3, "emoji": "💻"},
-        "Journalist": {"max_players": 3, "emoji": "📰"}
-    }
-    roles_list = list(roles.keys())
-    colors = ("#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff")
+    #Rules
+    st.header("Rules")
+    with open(rules_path, "r") as f:
+        lines = f.read()
+        lines = lines.split("\n\n")
+        for line in lines:
+            st.markdown(line)
 
-    # Load dataframe
+    # Explain Roles
+    st.header("Roles")
+    with open(roles_path, "r") as f:
+        roles = json.load(f)
+    roles_keys = list(roles.keys())
+    col_max = 3
+    while len(roles_keys) > 0:
+        if len(roles_keys) < col_max:
+            col_max = len(roles_keys)
+        cols = st.beta_columns(col_max)
+
+        roles_col = roles_keys[:col_max+1]
+        roles_keys = roles_keys[col_max:]
+
+        for col, role in zip(cols, roles_col):
+            with col:
+                st.subheader(f"{role} {roles[role]['emoji']}")
+                st.markdown(f"{role}s {roles[role]['description']}")
+
+    # Load dataframe roles counting
     if os.path.exists(dataset_path):
         df = pd.read_json(dataset_path)
     else:
-        df = pd.DataFrame({"Role": roles_list, "Participants": [1] + [0] * (len(roles_list) - 1)})
+        roles_list = list(roles.keys())
+        participants_list = [roles[role]["taken_by_default"] for role in roles_list]
+        df = pd.DataFrame({"Role": roles_list, "Participants": participants_list})
+        df[df["Role"]=="Mediator"]["Participants"] = 1
 
     # Load participants
     if os.path.exists(participants_path):
@@ -56,7 +78,8 @@ def app_rg():
     else:
         participants_df = pd.DataFrame({"name": [], "email": [], "role": []})
 
-    # Side-bar options
+
+    # __________Sidebar_____________
     st.sidebar.title("Choose your Role 🧙‍♀️")
     name = st.sidebar.text_input("Name:")
     email = st.sidebar.text_input("Email:")
@@ -69,41 +92,93 @@ def app_rg():
 
     participant_text = ""
 
-    if chosen_role != "--Select--":
-        if not is_email_valid(email):
-            participant_text = "⚠️ Please provide a valid email"
+    if st.sidebar.button('Submit'):
+        valid, participant_text = validate_form(name, email, chosen_role, participants_df)
 
-        else:
-            prev_role = get_role_by_email(participants_df, email)
-            if prev_role is not None:
-                participant_text = f"⛔️ You have already chosen your role of {prev_role}"
-            else:
-                # Save participant
-                participants_df = participants_df.append(
-                    {"name": name, "email": email, "role": chosen_role},
-                    ignore_index=True)
-                participants_df.to_json(participants_path)
+        # Save participant
+        if valid:
+            participants_df = df.append(
+                {"name": name, "email": email, "role": chosen_role},
+                ignore_index=True)
+            participants_df.to_json(participants_path, indent=4)
 
-                prep = "an" if chosen_role[0].lower() in ["a", "e", "i", "o", "u"] else "a"
-                participant_text = f"You're happy to have you as {prep} {chosen_role} {roles[chosen_role]['emoji']}! " \
-                                   f"You can find more info on the event in your mailbox 📬"
-                df.loc[df["Role"] == chosen_role, "Participants"] += 1
-                # TODO: Send email
-                # Save dataframe
-                df.to_json(dataset_path)
+            prep = "an" if chosen_role[0].lower() in ["a", "e", "i", "o", "u"] else "a"
+            participant_text = f"We're happy to have you as {prep} {chosen_role} {roles[chosen_role]['emoji']}! " \
+                               f"You can find more info on the event in your mailbox 📬"
+            df.loc[df["Role"] == chosen_role, "Participants"] += 1
+
+            # TODO: Send email
+            # Save dataframe
+            df.to_json(dataset_path, indent=4)
+
+    st.sidebar.markdown(f"**{participant_text}**")
 
     # Plot participants
-    st.markdown("## Roles")
-    plt.barh(df["Role"].tolist(), df["Participants"].tolist(), color=colors)
-    plt.gca().invert_yaxis()
-    st.pyplot()
+    st.header("Vacancies")
+    plot(df, roles)
+    st.pyplot(transparent=True)
 
-    st.markdown(f"**{participant_text}**")
+    st.header("Contacts")
+    st.markdown("""\t [MeetUp](https://www.meetup.com/pt-BR/Deep-Learning-Sessions-Lisboa/)"""
+                """\t- [LinkedIn](https://www.linkedin.com/company/deeplisboa)"""
+                """\t- [GitHub](https://github.com/DeepLearningLisbon)"""
+                """\t- [Twitter](https://twitter.com/DeepLisboa)""")
+
+def plot(df, roles):
+    colors = [roles[role]["color"] for role in df["Role"].tolist()]
+
+    fig, ax = plt.subplots(figsize=(5, 3.5))
+    plt.barh(df["Role"].tolist(), df["Participants"].tolist(), color=colors, alpha=0.9, linewidth=8)
+    plt.xticks(list(range(1+max([roles[role]["max_players"] for role in roles]))))
+
+    # Beautify
+    ax.spines['left'].set_color("#888")
+    ax.spines['bottom'].set_color("#888")
+    ax.xaxis.label.set_color('#888')
+    ax.yaxis.label.set_color('#888')
+    ax.tick_params(axis='x', colors='#888')
+    ax.tick_params(axis='y', colors='#888')
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    ax.spines['left'].set_bounds((0, len(df["Role"].tolist())-1))
+    ax.set_xlim(0, 4)
+    # Add some space between the axis and the plot
+    ax.spines['left'].set_position(('outward', 8))
+    ax.spines['bottom'].set_position(('outward', 5))
+
+    # Make some labels
+    rects = ax.patches
+    max_labels = [roles[role]["max_players"] for role in df["Role"].tolist()]
+    n_labels = df["Participants"].tolist()
+    labels = [f"{n}/{max}" for n, max in zip(n_labels, max_labels)]
+    for rect, label, color in zip(rects, labels, colors):
+        width = rect.get_width()
+        ax.text(width + 0.1, rect.get_y() + rect.get_height() / 2, label,
+                ha='left', va='center', color=color)
+
+
+def validate_form(name, email, role, df):
+    # Check role selected
+    if role == "--Select--":
+        return False, "⚠️ Please select your role before submiting"
+
+    # Check evalid email
+    if not is_email_valid(email):
+        return False, f"⚠️ Please provide a valid email, \"{email}\" is not a valid email"
+
+    # Check if email has no previous assigned role
+    prev_role = get_role_by_email(df, email)
+    if prev_role is not None:
+        return False, f"⛔️ You have already chosen your role: {prev_role}"
+
+    return True, None
 
 
 def is_email_valid(text):
-    # TODO: Check if email is valid
-    return text is not None and len(text) > 0
+    regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+    return text is not None and len(text) > 0 and re.search(regex, text)
 
 
 def get_role_by_email(participants_df, email):
