@@ -39,31 +39,7 @@ def app_rg():
     st.markdown(f"📝 **Paper:** [{paper}]({paper_link})")
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
-    try:
-        rmtree(storage_path)
-    except:
-        pass
-
-    try:
-        rmtree(data_path)
-    except:
-        pass
-
-    if "github_token" in st.secrets:
-        token = st.secrets["github_token"] + "@"
-    else:
-        token = ""
-
-    repo = git.Repo.clone_from(
-        "https://{}github.com/DeepLearningLisbon/reading-group.git".format(token),
-        "data_storage")
-
-    current = repo.create_head(branch)
-    current.checkout()
-    repo.git.pull('origin', branch)
-    copytree(os.path.join(storage_path, data_path), data_path)
-
-    #Rules
+    # Rules
     st.header("Rules")
     with open(rules_path, "r") as f:
         lines = f.read()
@@ -89,6 +65,28 @@ def app_rg():
             with col:
                 st.subheader(f"{role} {roles[role]['emoji']}")
                 st.markdown(f"{role}s {roles[role]['description']}")
+
+    # Get Data from github branch
+    if "github_token" in st.secrets:
+        token = st.secrets["github_token"] + "@"
+    else:
+        token = ""
+
+    try:
+        rmtree(storage_path)
+    except:
+        pass
+    try:
+        rmtree(data_path)
+    except:
+        pass
+    repo = git.Repo.clone_from(
+        "https://{}github.com/DeepLearningLisbon/reading-group.git".format(token),
+        "data_storage")
+    current = repo.create_head(branch)
+    current.checkout()
+    repo.git.pull('origin', branch)
+    copytree(os.path.join(storage_path, data_path), data_path)
 
     # Load dataframe roles counting
     if os.path.exists(dataset_path):
@@ -122,26 +120,30 @@ def app_rg():
     if st.sidebar.button('Submit'):
         valid, participant_text = validate_form(name, email, chosen_role, participants_df)
 
-        # Save participant
         if valid:
+
+            # Save participants
             participants_df = df.append(
                 {"name": name, "email": email, "role": chosen_role},
                 ignore_index=True)
             df.loc[df["Role"] == chosen_role, "Participants"] += 1
 
+            # Store in Json files
             participants_df.to_json(participants_path)
             df.to_json(dataset_path)
 
-            prep = "an" if chosen_role[0].lower() in ["a", "e", "i", "o", "u"] else "a"
-            participant_text = f"We're happy to have you as {prep} {chosen_role} {roles[chosen_role]['emoji']}! " \
-                               f"You can find more info on the event in your mailbox 📬"
+            # Push to remote
             rmtree(os.path.join(storage_path, data_path))
             copytree(data_path, os.path.join(storage_path, data_path))
             repo.git.add(os.path.join(data_path))
             repo.index.commit("New data")
             origin = repo.remote(name='origin')
             origin.push(branch)
-    rmtree(storage_path)
+
+            # Present text
+            prep = "an" if chosen_role[0].lower() in ["a", "e", "i", "o", "u"] else "a"
+            participant_text = f"We're happy to have you as {prep} {chosen_role} {roles[chosen_role]['emoji']}! "
+                               #f"You can find more info on the event in your mailbox 📬"
 
             # TODO: Send email
 
