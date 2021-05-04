@@ -6,10 +6,11 @@ To run the app:
 ```
 """
 
-
 import os
 import re
+import git
 import json
+from shutil import copytree, rmtree
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -18,11 +19,13 @@ import streamlit as st
 rules_path = "rules.md"
 event_path = "event.json"
 roles_path = "roles.json"
+storage_path = "data_storage"
+data_path = "data"
 dataset_path = "data/reading_group_roles.json"
 participants_path = "data/participants.json"
+branch = 'data'
 
 def app_rg():
-
     # __________Main Body_____________
     # Make Header with Event Info
     with open(event_path, "r") as f:
@@ -35,6 +38,30 @@ def app_rg():
     st.markdown(f"🗓 **Date:** {date}")
     st.markdown(f"📝 **Paper:** [{paper}]({paper_link})")
     st.set_option('deprecation.showPyplotGlobalUse', False)
+
+    try:
+        rmtree(storage_path)
+    except:
+        pass
+
+    try:
+        rmtree(data_path)
+    except:
+        pass
+
+    if "github_token" in st.secrets:
+        token = st.secrets["github_token"] + "@"
+    else:
+        token = ""
+
+    repo = git.Repo.clone_from(
+        "https://{}github.com/DeepLearningLisbon/reading-group.git".format(token),
+        "data_storage")
+
+    current = repo.create_head(branch)
+    current.checkout()
+    repo.git.pull('origin', branch)
+    copytree(os.path.join(storage_path, data_path), data_path)
 
     #Rules
     st.header("Rules")
@@ -100,16 +127,24 @@ def app_rg():
             participants_df = df.append(
                 {"name": name, "email": email, "role": chosen_role},
                 ignore_index=True)
-            participants_df.to_json(participants_path, indent=4)
+            df.loc[df["Role"] == chosen_role, "Participants"] += 1
+
+            participants_df.to_json(participants_path)
+            df.to_json(dataset_path)
 
             prep = "an" if chosen_role[0].lower() in ["a", "e", "i", "o", "u"] else "a"
             participant_text = f"We're happy to have you as {prep} {chosen_role} {roles[chosen_role]['emoji']}! " \
                                f"You can find more info on the event in your mailbox 📬"
-            df.loc[df["Role"] == chosen_role, "Participants"] += 1
+            rmtree(os.path.join(storage_path, data_path))
+            copytree(data_path, os.path.join(storage_path, data_path))
+            repo.git.add(os.path.join(data_path))
+            repo.index.commit("New data")
+            origin = repo.remote(name='origin')
+            origin.push(branch)
+    rmtree(storage_path)
 
             # TODO: Send email
-            # Save dataframe
-            df.to_json(dataset_path, indent=4)
+
 
     st.sidebar.markdown(f"**{participant_text}**")
 
