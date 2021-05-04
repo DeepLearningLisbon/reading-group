@@ -26,4 +26,4 @@ and add the file `.\streamlit\secrets.toml` with the following content:
 github_token = "ghp_your_great_token"
 ```
 
-If you're running on stramlit server set your 
+If you're running on streamlit cloud [set your secrets in streamlit interface](https://blog.streamlit.io/secrets-in-sharing-apps/).
