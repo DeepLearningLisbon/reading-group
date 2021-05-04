@@ -132,17 +132,16 @@ def plot(df, roles):
     plt.xticks(list(range(1+max([roles[role]["max_players"] for role in roles]))))
 
     # Beautify
-    ax.spines['left'].set_color("#888")
-    ax.spines['bottom'].set_color("#888")
-    ax.xaxis.label.set_color('#888')
-    ax.yaxis.label.set_color('#888')
-    ax.tick_params(axis='x', colors='#888')
-    ax.tick_params(axis='y', colors='#888')
+    ax.spines['left'].set_color("#888888")
+    ax.spines['bottom'].set_color("#888888")
+    ax.xaxis.label.set_color('#888888')
+    ax.yaxis.label.set_color('#888888')
+    ax.tick_params(axis='x', colors='#888888')
+    ax.tick_params(axis='y', colors='#888888')
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
-    ax.spines['left'].set_bounds((0, len(df["Role"].tolist())-1))
     ax.set_xlim(0, 4)
     # Add some space between the axis and the plot
     ax.spines['left'].set_position(('outward', 8))
