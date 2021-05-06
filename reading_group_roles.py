@@ -86,7 +86,7 @@ def app_rg():
     repo = git.Repo.clone_from(
         "https://{}github.com/DeepLearningLisbon/reading-group.git".format(token),
         "data_storage")
-    current = repo.create_head(branch)
+    current = repo.create_head(branch, repo.remotes.origin.refs[branch])
     current.checkout()
     repo.git.pull('origin', branch)
     copytree(os.path.join(storage_path, data_path), data_path)
