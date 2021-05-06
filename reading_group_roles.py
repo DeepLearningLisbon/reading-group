@@ -102,7 +102,7 @@ def app_rg():
 
     # Load participants
     if os.path.exists(participants_path):
-        participants_df = pd.read_json(participants_path)
+        participants_df = pd.read_json(participants_path, orient='records')
     else:
         participants_df = pd.DataFrame({"name": [], "email": [], "role": []})
 
@@ -126,14 +126,19 @@ def app_rg():
         if valid:
 
             # Save participants
-            participants_df = df.append(
+            participants_df = participants_df.append(
                 {"name": name, "email": email, "role": chosen_role},
                 ignore_index=True)
             df.loc[df["Role"] == chosen_role, "Participants"] += 1
 
             # Store in Json files
-            participants_df.to_json(participants_path)
+            participants_df.to_json(participants_path, orient='records')
             df.to_json(dataset_path)
+            for json_path in [participants_path, dataset_path]:
+                with open(json_path, "r") as f:
+                    j = json.load(f)
+                with open(json_path, "w") as f:
+                    json.dump(j, f, indent=4)
 
             # Push to remote
             rmtree(os.path.join(storage_path, data_path))
