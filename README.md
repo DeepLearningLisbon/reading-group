@@ -14,8 +14,15 @@ To start the streamlit app run:
 You'll need `streamlit=^0.80`, `pandas` and `matplotlib`.
 
 ### Storage
-This app uses a git branch as storage for small data, in order to avoid having to set up and maintain
-a separate data storage.
+This app uses a git branch of this same repository as storage for small data: branch `data`. This avoids having 
+to set up and maintain a separate data storage.
+
+#### How to's
+1. **How to know the participants submitted?** Got to [participants.json in the `data` branch](https://github.com/DeepLearningLisbon/reading-group/tree/data/data/participants.json)
+
+2. **How to reset the participant counting?** Delete the data files, commit and push to the `data` branch.
+
+####
 
 ### Secrets
 If the data repo is private and you're running locally, then in order to run the app you need
