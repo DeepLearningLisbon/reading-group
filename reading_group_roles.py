@@ -34,7 +34,9 @@ def app_rg():
     paper = event["paper"]
     paper_link = event["paper_link"]
 
-    st.title("Reading Group by Deep Learning Session Lisbon")
+    st.title("Reading Group")
+    st.subheader("**by Deep Learning Session Lisbon**")
+    st.markdown("")
     st.markdown(f"🗓 **Date:** {date}")
     st.markdown(f"📝 **Paper:** [{paper}]({paper_link})")
     st.set_option('deprecation.showPyplotGlobalUse', False)
