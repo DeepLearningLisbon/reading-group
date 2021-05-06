@@ -2,3 +2,4 @@
 .idea
 /start.sh
 secrets.toml
+/data_storage
