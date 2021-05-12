@@ -12,8 +12,7 @@ It will never get out again!
 
 #### What can you do to help?
 You can join us! By choosing any free vacancy on the sidebar, doing you part and joining us during 
-our virtual battle that takes place at {date}. Please be prepared!
-
+our virtual battle. Please be prepared!
 
 #### What are the roles?
 The roles are described below. You don't need to read the full paper if you think it's not necessary for your
