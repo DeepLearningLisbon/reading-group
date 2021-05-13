@@ -22,6 +22,10 @@ to set up and maintain a separate data storage.
 
 2. **How to reset the participant counting?** Delete the data files, commit and push to the `data` branch.
 
+3. **How to change event's settings?** Just edit the `event.json` file with the right info.
+
+4. **How to change the rules?** The website takes the data in `rules.md` and shows it, so just add new markdown to that file. ;)
+
 ####
 
 ### Secrets
