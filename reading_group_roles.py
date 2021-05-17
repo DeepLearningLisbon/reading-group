@@ -162,6 +162,9 @@ def app_rg():
     st.header("Vacancies")
     plot(df, roles)
     st.pyplot(transparent=True)
+    
+    st.head("Suggest or Vote on Next Papers")
+    st.markdown("Add your suggestions or vote on other papers [here](https://docs.google.com/spreadsheets/d/12fSacmB_gb4Wv7va20fRYooIpQSMuJkZ_7hDqW8k_t4/edit?usp=sharing)!") 
 
     st.header("Contacts")
     st.markdown("""\t [MeetUp](https://www.meetup.com/pt-BR/Deep-Learning-Sessions-Lisboa/)"""
