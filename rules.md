@@ -4,11 +4,7 @@ In this quest there are two sides:
 - a team of players ⚔️, who are brought together in a quest to defeat this paper
 
 #### How do we defeat the paper?
-During our virtual battle event we need to tackle different fronts. That's why we have different roles.
-We need to squeeze it and imprison its essence inside a report artifact!! 
-Moreover, we are going to make the resulting artifact available online. 
-This way there will always be someone checking if it is still there.
-It will never get out again! 
+During our virtual battle event we need to tackle different fronts. That's why we have different roles!
 
 #### What can you do to help?
 You can join us! By choosing any free vacancy on the sidebar, doing you part and joining us during 
