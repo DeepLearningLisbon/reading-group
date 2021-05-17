@@ -2,7 +2,7 @@
     "'Good' Peer Reviewer": {
         "emoji": "\ud83d\udc7c",
         "max_players": 4,
-        "description": "are responsible to find the strenghts of the paper, everything that would be important for the paper to be accepted for a conference.",
+        "description": "are responsible to find the strengths of the paper, everything that would be important for the paper to be accepted for a conference.",
         "color": "#E1B13D",
         "taken_by_default": 0
     },
