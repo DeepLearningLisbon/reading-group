@@ -22,7 +22,7 @@ roles_path = "roles.json"
 storage_path = "data_storage"
 data_path = "data"
 dataset_path = "data/reading_group_roles_1.json"
-participants_path = "data/participants.json"
+participants_path = "data/participants_1.json"
 branch = 'data'
 
 def app_rg():
