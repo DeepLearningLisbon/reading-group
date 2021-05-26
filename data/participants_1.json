@@ -13,5 +13,10 @@
         "name": "David Belo",
         "email": "djsabelo@gmail.com",
         "role": "'Good' Peer Reviewer"
+    },
+    {
+        "name": "Catarina Bel\u00e9m",
+        "email": "catarina.belem@feedzai.com",
+        "role": "Archaeologist"
     }
 ]
