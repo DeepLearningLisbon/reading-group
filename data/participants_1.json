@@ -33,5 +33,10 @@
         "name": "Bernardo Pereira",
         "email": "bmvm.pereira@gmail.com",
         "role": "Journalist"
+    },
+    {
+        "name": "Pedro Costa",
+        "email": "pedro.m.p.costa@netcabo.pt",
+        "role": "'Mean' Peer Reviewer"
     }
 ]
