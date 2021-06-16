@@ -1,0 +1,20 @@
+{
+    "Role": {
+        "0": "'Good' Peer Reviewer",
+        "1": "'Mean' Peer Reviewer",
+        "2": "Archaeologist",
+        "3": "Developer",
+        "4": "Entrepreneur",
+        "5": "Journalist",
+        "6": "Mediator"
+    },
+    "Participants": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 1,
+        "5": 0,
+        "6": 1
+    }
+}
