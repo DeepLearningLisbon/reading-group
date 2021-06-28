@@ -28,5 +28,10 @@
         "name": "Gaspar",
         "email": "gaspar.fcano@gmail.com",
         "role": "Journalist"
+    },
+    {
+        "name": "Luis Espirito Santo",
+        "email": "luis.carlos.as@gmail.com",
+        "role": "Archaeologist"
     }
 ]
