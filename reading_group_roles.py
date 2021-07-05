@@ -21,8 +21,8 @@ event_path = "event.json"
 roles_path = "roles.json"
 storage_path = "data_storage"
 data_path = "data"
-dataset_path = "data/reading_group_roles_3.json"
-participants_path = "data/participants_3.json"
+dataset_path = "data/reading_group_roles_4.json"
+participants_path = "data/participants_4.json"
 branch = 'data'
 
 def app_rg():
@@ -38,8 +38,9 @@ def app_rg():
     st.title("Reading Group #3")
     st.subheader("**by Deep Learning Session Lisbon**")
     st.markdown("")
-    st.markdown(f"🗓 **Date:** [{date}]({meet_up_link})")
+    st.markdown(f"🗓 **Date:** {date}")
     st.markdown(f"📝 **Paper:** [{paper}]({paper_link})")
+    st.markdown(f"📍 **Meetup:** [Link]({meet_up_link})")
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
     # Rules
