@@ -35,7 +35,7 @@ def app_rg():
     paper_link = event["paper_link"]
     meet_up_link = event["meet_up_link"]
 
-    st.title("Reading Group #3")
+    st.title("Reading Group #4")
     st.subheader("**by Deep Learning Session Lisbon**")
     st.markdown("")
     st.markdown(f"🗓 **Date:** {date}")
