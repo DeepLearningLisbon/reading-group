@@ -3,5 +3,10 @@
         "name": "Ines Pedro",
         "email": "ines_pedro94@hotmail.com",
         "role": "Developer"
+    },
+    {
+        "name": "Ricardo Quinteiro",
+        "email": "quinteiro1234@gmail.com",
+        "role": "'Good' Peer Reviewer"
     }
 ]
