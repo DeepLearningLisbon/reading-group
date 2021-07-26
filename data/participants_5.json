@@ -13,5 +13,10 @@
         "name": "Ricardo Quinteiro",
         "email": "quinteiro1234@gmail.com",
         "role": "Journalist"
+    },
+    {
+        "name": "Lu\u00eds Esp\u00edrito Santo",
+        "email": "luis.carlos.as@gmail.com",
+        "role": "Entrepreneur"
     }
 ]
