@@ -21,8 +21,8 @@ event_path = "event.json"
 roles_path = "roles.json"
 storage_path = "data_storage"
 data_path = "data"
-dataset_path = "data/reading_group_roles_5.json"
-participants_path = "data/participants_5.json"
+dataset_path = "data/reading_group_roles_6.json"
+participants_path = "data/participants_6.json"
 branch = 'data'
 
 def app_rg():
@@ -35,7 +35,7 @@ def app_rg():
     paper_link = event["paper_link"]
     meet_up_link = event["meet_up_link"]
 
-    st.title("Reading Group #5")
+    st.title("Reading Group #6")
     st.subheader("**by Deep Learning Session Lisbon**")
     st.markdown("")
     st.markdown(f"🗓 **Date:** {date}")
