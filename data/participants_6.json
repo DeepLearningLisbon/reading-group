@@ -13,5 +13,10 @@
         "name": "Kat",
         "email": "catarina.garcia.belem@gmail.com",
         "role": "Archaeologist"
+    },
+    {
+        "name": "Andr\u00e9 Pinto",
+        "email": "andret13pinto@hotmail.com",
+        "role": "'Good' Peer Reviewer"
     }
 ]
