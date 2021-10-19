@@ -42,7 +42,7 @@
         "taken_by_default": 0
     },
     "Attendee": {
-        "emoji": "\ue419",
+        "emoji": "👀",
         "max_players": 8,
         "description": "you haven't had the time to go through the paper but want to join or simply watch the discussion",
         "color": "#FF92A5",
