@@ -191,7 +191,7 @@ def plot(df, roles):
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
-    ax.set_xlim(0, 4)
+    ax.set_xlim(0, 8)
     # Add some space between the axis and the plot
     ax.spines['left'].set_position(('outward', 8))
     ax.spines['bottom'].set_position(('outward', 5))
