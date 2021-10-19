@@ -41,6 +41,13 @@
         "color": "#2A9A6A",
         "taken_by_default": 0
     },
+    "Attendee": {
+        "emoju": "\uE419",
+        "max_players": 8,
+        "description": "you haven't had the time to go through the paper but want to join or simply watch the discussion",
+        "color": "#FF92A5",
+        "taken_by_default": 0
+    },
     "Mediator": {
         "emoji": "\u2696",
         "max_players": 1,
